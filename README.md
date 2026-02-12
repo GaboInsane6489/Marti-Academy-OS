@@ -1,36 +1,205 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Martí Academy OS
 
-## Getting Started
+Infraestructura Digital Institucional del Colegio José Martí.
 
-First, run the development server:
+Martí Academy OS es un sistema operativo educativo diseñado para centralizar la gestión académica, fortalecer la comunidad institucional y motivar el rendimiento estudiantil mediante una arquitectura moderna, segura y escalable.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
+No es solo una plataforma de notas.
+Es el ecosistema digital oficial del colegio.
+
+Visión
+
+Convertirse en la infraestructura digital central del Colegio José Martí, integrando:
+
+Gestión académica estructurada
+
+Comunidad educativa segura
+
+Identidad digital institucional
+
+Sistema de gamificación basado en mérito
+
+Métricas en tiempo real
+
+Con una arquitectura preparada para escalar hacia un modelo replicable en otras instituciones.
+
+Stack Tecnológico
+
+Next.js (App Router)
+
+React
+
+Tailwind CSS
+
+Supabase (Auth, Database, Realtime, Storage)
+
+Vercel (Deploy)
+
+pnpm (Package Manager)
+
+ESLint + Prettier
+
+Arquitectura del Proyecto
+
+El proyecto sigue una arquitectura modular orientada a dominios:
+
+src/
+│
+├── app/ # App Router y entrypoints
+├── features/ # Dominios funcionales
+├── core/ # Lógica central del sistema
+├── shared/ # Código transversal reutilizable
+├── config/ # Configuraciones externas
+├── docs/ # Documentación viva del sistema
+└── styles/ # Estilos globales
+
+Principios arquitectónicos
+
+Modularidad estricta
+
+Separación de dominios
+
+Seguridad desde la base de datos
+
+Performance como estándar
+
+Documentación como parte del sistema
+
+Dominios Principales
+
+Auth
+
+Usuarios
+
+Académico
+
+Feed Institucional
+
+Notificaciones
+
+Gamificación
+
+Ranking
+
+Eventos
+
+Dashboard por Rol
+
+Seguridad
+
+El sistema está diseñado considerando:
+
+Protección de datos de menores
+
+Control estricto por roles
+
+Row Level Security (RLS) en Supabase
+
+Validaciones tanto en cliente como en servidor
+
+Filosofía del Sistema
+
+Seguridad primero
+
+Escalabilidad desde el diseño
+
+Arquitectura modular
+
+Performance optimizado
+
+Documentación viva
+
+Instalación
+
+Clonar el repositorio:
+
+git clone https://github.com/GaboInsane6489/marti-academy-os.git
+cd marti-academy-os
+
+Instalar dependencias:
+
+pnpm install
+
+Crear archivo de entorno:
+
+.env.local
+
+Agregar:
+
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+
+Ejecutar entorno de desarrollo:
+
 pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Roadmap Inicial
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Fase 0
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Arquitectura base
 
-## Learn More
+Documentación fundacional
 
-To learn more about Next.js, take a look at the following resources:
+Setup del proyecto
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Fase 1
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Sistema de autenticación
 
-## Deploy on Vercel
+Modelo de roles
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Dashboard base
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Fase 2
+
+Módulo académico
+
+Publicaciones institucionales
+
+Notificaciones
+
+Fase 3
+
+Gamificación
+
+Ranking
+
+Métricas avanzadas
+
+Estado del Proyecto
+
+En fase de fundación arquitectónica.
+
+Este proyecto está diseñado para evolucionar durante varios años y mantenerse escalable, mantenible y profesional.
+
+Contribución
+
+El sistema está diseñado para permitir colaboración estructurada.
+
+Antes de contribuir:
+
+Revisar documentación en src/docs
+
+Seguir principios de arquitectura modular
+
+Mantener consistencia con el dominio
+
+Guías de contribución formales serán añadidas en futuras versiones.
+
+Licencia
+
+Pendiente de definir.
+
+Autor
+
+Gabriel González
+Full Stack Developer
+
+Proyecto fundacional con visión institucional y expansión futura.
+
+Cuando lo pegues y hagas commit, el mensaje correcto sería:
+
+git add .
+git commit -m "docs: add foundational README for Martí Academy OS"
+git push
