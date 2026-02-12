@@ -1,13 +1,13 @@
-Martí Academy OS
+# Martí Academy OS
 
-Infraestructura Digital Institucional del Colegio José Martí.
+Infraestructura Digital Institucional del Colegio José Martí
 
 Martí Academy OS es un sistema operativo educativo diseñado para centralizar la gestión académica, fortalecer la comunidad institucional y motivar el rendimiento estudiantil mediante una arquitectura moderna, segura y escalable.
 
 No es solo una plataforma de notas.
 Es el ecosistema digital oficial del colegio.
 
-Visión
+## Visión
 
 Convertirse en la infraestructura digital central del Colegio José Martí, integrando:
 
@@ -23,7 +23,7 @@ Métricas en tiempo real
 
 Con una arquitectura preparada para escalar hacia un modelo replicable en otras instituciones.
 
-Stack Tecnológico
+## Stack Tecnológico
 
 Next.js (App Router)
 
@@ -35,13 +35,13 @@ Supabase (Auth, Database, Realtime, Storage)
 
 Vercel (Deploy)
 
-pnpm (Package Manager)
+pnpm
 
 ESLint + Prettier
 
-Arquitectura del Proyecto
+## Arquitectura del Proyecto
 
-El proyecto sigue una arquitectura modular orientada a dominios:
+El proyecto sigue una arquitectura modular orientada a dominios.
 
 src/
 │
@@ -53,11 +53,11 @@ src/
 ├── docs/ # Documentación viva del sistema
 └── styles/ # Estilos globales
 
-Principios arquitectónicos
+## Principios Arquitectónicos
 
 Modularidad estricta
 
-Separación de dominios
+Separación clara de dominios
 
 Seguridad desde la base de datos
 
@@ -87,6 +87,8 @@ Dashboard por Rol
 
 Seguridad
 
+Seguridad
+
 El sistema está diseñado considerando:
 
 Protección de datos de menores
@@ -95,7 +97,12 @@ Control estricto por roles
 
 Row Level Security (RLS) en Supabase
 
-Validaciones tanto en cliente como en servidor
+Validaciones en cliente y servidor
+
+Arquitectura orientada a trazabilidad futura
+
+La seguridad no es una funcionalidad.
+Es una condición estructural del sistema.
 
 Filosofía del Sistema
 
@@ -109,9 +116,9 @@ Performance optimizado
 
 Documentación viva
 
-Instalación
+## Instalación
 
-Clonar el repositorio:
+Clonar repositorio:
 
 git clone https://github.com/GaboInsane6489/marti-academy-os.git
 cd marti-academy-os
@@ -133,9 +140,8 @@ Ejecutar entorno de desarrollo:
 
 pnpm dev
 
-Roadmap Inicial
-
-Fase 0
+Roadmap
+Fase 0 — Fundación Arquitectónica
 
 Arquitectura base
 
@@ -143,7 +149,7 @@ Documentación fundacional
 
 Setup del proyecto
 
-Fase 1
+## Fase 1 — Núcleo Institucional
 
 Sistema de autenticación
 
@@ -151,55 +157,55 @@ Modelo de roles
 
 Dashboard base
 
-Fase 2
+## Fase 2 — Módulo Académico
 
-Módulo académico
+Gestión académica estructurada
 
 Publicaciones institucionales
 
 Notificaciones
 
-Fase 3
+## Fase 3 — Gamificación
 
-Gamificación
+Sistema de puntos
 
 Ranking
 
 Métricas avanzadas
 
-Estado del Proyecto
+## Estado del Proyecto
 
 En fase de fundación arquitectónica.
 
-Este proyecto está diseñado para evolucionar durante varios años y mantenerse escalable, mantenible y profesional.
+Diseñado para evolucionar durante varios años con foco en:
 
-Contribución
+Escalabilidad
 
-El sistema está diseñado para permitir colaboración estructurada.
+Seguridad
+
+Mantenibilidad
+
+Profesionalismo técnico
+
+## Contribución
 
 Antes de contribuir:
 
 Revisar documentación en src/docs
 
-Seguir principios de arquitectura modular
+Respetar arquitectura modular
 
-Mantener consistencia con el dominio
+Mantener coherencia con el dominio
 
-Guías de contribución formales serán añadidas en futuras versiones.
+Guías formales de contribución serán añadidas en futuras versiones.
 
-Licencia
+## Licencia
 
 Pendiente de definir.
 
-Autor
+## Autor
 
 Gabriel González
 Full Stack Developer
 
 Proyecto fundacional con visión institucional y expansión futura.
-
-Cuando lo pegues y hagas commit, el mensaje correcto sería:
-
-git add .
-git commit -m "docs: add foundational README for Martí Academy OS"
-git push
