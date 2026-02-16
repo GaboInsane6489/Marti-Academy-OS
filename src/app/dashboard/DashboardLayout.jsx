@@ -44,8 +44,21 @@ export default function DashboardLayout({ children }) {
 
   const navItems = [
     { icon: LayoutDashboard, label: "Mi Portal", href: roleBase },
-    ...(profile?.role === "docente"
+    // Admin tiene acceso a opciones de admin Y docente
+    ...(profile?.role === "admin"
       ? [
+          // Opciones de Admin
+          {
+            icon: Shield,
+            label: "Gestión de Usuarios",
+            href: "/dashboard/admin",
+          },
+          {
+            icon: Settings,
+            label: "Configuración",
+            href: "/dashboard/admin/configuracion",
+          },
+          // Opciones de Docente (para admins que también son docentes)
           {
             icon: Users,
             label: "Asistencia",
@@ -55,37 +68,42 @@ export default function DashboardLayout({ children }) {
             icon: BookOpen,
             label: "Evaluaciones",
             href: "/dashboard/docente/evaluaciones",
-          }, // Added Evaluations link
+          },
           {
             icon: Library,
             label: "Contenidos",
             href: "/dashboard/docente/recursos",
           },
         ]
-      : profile?.role === "estudiante"
+      : profile?.role === "docente"
         ? [
             {
-              icon: Trophy,
-              label: "Méritos",
-              href: "/dashboard/estudiante/tienda",
+              icon: Users,
+              label: "Asistencia",
+              href: "/dashboard/docente/asistencia",
+            },
+            {
+              icon: BookOpen,
+              label: "Evaluaciones",
+              href: "/dashboard/docente/evaluaciones",
             },
             {
               icon: Library,
               label: "Contenidos",
-              href: "/dashboard/estudiante/recursos",
+              href: "/dashboard/docente/recursos",
             },
           ]
-        : profile?.role === "admin"
+        : profile?.role === "estudiante"
           ? [
               {
-                icon: Users,
-                label: "Gestión de Usuarios",
-                href: "/dashboard/admin",
+                icon: Trophy,
+                label: "Méritos",
+                href: "/dashboard/estudiante/tienda",
               },
               {
-                icon: Settings,
-                label: "Configuración",
-                href: "/dashboard/admin/configuracion",
+                icon: Library,
+                label: "Contenidos",
+                href: "/dashboard/estudiante/recursos",
               },
             ]
           : []),
