@@ -14,6 +14,7 @@ import {
   BookOpen,
   Library,
   Trophy,
+  Settings,
 } from "lucide-react";
 
 export default function DashboardLayout({ children }) {
@@ -74,7 +75,20 @@ export default function DashboardLayout({ children }) {
               href: "/dashboard/estudiante/recursos",
             },
           ]
-        : []),
+        : profile?.role === "admin"
+          ? [
+              {
+                icon: Users,
+                label: "Gestión de Usuarios",
+                href: "/dashboard/admin",
+              },
+              {
+                icon: Settings,
+                label: "Configuración",
+                href: "/dashboard/admin/configuracion",
+              },
+            ]
+          : []),
     { icon: Users, label: "Comunidad", href: "/dashboard/comunidad" },
     { icon: Bell, label: "Avisos", href: "/dashboard/notificaciones" },
     { icon: Shield, label: "Identidad", href: "/dashboard/ajustes" },
@@ -83,7 +97,7 @@ export default function DashboardLayout({ children }) {
   return (
     <div className="flex h-screen bg-zinc-950 text-zinc-100 overflow-hidden">
       {/* Sidebar Desktop */}
-      <aside className="hidden w-72 flex-col border-r border-white/5 bg-zinc-900/10 backdrop-blur-3xl lg:flex z-20">
+      <aside className="hidden w-72 flex-col border-r border-white/5 bg-zinc-900/95 lg:flex z-20">
         <div className="flex h-20 items-center gap-3 px-8 border-b border-white/5">
           <div className="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
             <Shield className="h-5 w-5 text-white" />
@@ -156,7 +170,7 @@ export default function DashboardLayout({ children }) {
         <div className="absolute bottom-0 left-0 h-[500px] w-[500px] rounded-full bg-cyan-600/5 blur-[120px] pointer-events-none" />
 
         {/* Navbar Superior */}
-        <header className="relative z-10 flex h-20 items-center justify-between px-8 border-b border-white/5 bg-zinc-950/20 backdrop-blur-xl">
+        <header className="relative z-10 flex h-20 items-center justify-between px-8 border-b border-white/5 bg-zinc-950/80 backdrop-blur-xl shrink-0">
           <div className="flex items-center gap-4">
             <button className="lg:hidden p-2 hover:bg-white/5 rounded-xl border border-white/5">
               <Menu className="h-6 w-6" />
@@ -209,7 +223,7 @@ export default function DashboardLayout({ children }) {
         </header>
 
         {/* Page Content */}
-        <div className="relative z-10 flex-1 p-8 overflow-auto lg:p-12 custom-scrollbar">
+        <div className="relative z-10 flex-1 p-8 overflow-y-auto lg:p-12 custom-scrollbar">
           {children}
         </div>
       </main>
