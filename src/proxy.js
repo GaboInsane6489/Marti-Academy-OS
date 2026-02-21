@@ -54,25 +54,72 @@ export default async function proxy(request) {
       return NextResponse.redirect(url);
     }
 
-    // RBAC: Verificar rol para rutas segmentadas
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
+    // --------------------------------------------------------
+    // RBAC OPTIMIZADO: Caché en Cookies
+    // --------------------------------------------------------
+    // Evitamos consultar la BD en cada request leyendo una cookie.
 
-    const role = profile?.role || "estudiante";
+    let role = request.cookies.get("marti-user-role")?.value;
+    let needsCookieUpdate = false;
 
-    // Si intenta acceder a una ruta de rol distinta, redirigir a su dashboard correspondiente
+    if (!role) {
+      // Si no hay cookie, consultamos a Supabase
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .single();
+
+      role = profile?.role || "estudiante";
+      needsCookieUpdate = true;
+    }
+
+    // Si intenta acceder a una ruta de rol distinta, redirigir
     if (url.pathname.startsWith("/dashboard/admin") && role !== "admin") {
-      url.pathname = "/dashboard/estudiante"; // Fallback seguro
-      return NextResponse.redirect(url);
+      url.pathname = "/dashboard/estudiante";
+      const redirectResponse = NextResponse.redirect(url);
+      if (needsCookieUpdate) {
+        redirectResponse.cookies.set("marti-user-role", role, {
+          path: "/",
+          maxAge: 60 * 60 * 24, // 24 horas
+          sameSite: "lax",
+        });
+      }
+      return redirectResponse;
     }
-    if (url.pathname.startsWith("/dashboard/docente") && role !== "docente") {
-      url.pathname = "/dashboard/estudiante"; // Fallback seguro
-      return NextResponse.redirect(url);
+
+    if (
+      url.pathname.startsWith("/dashboard/docente") &&
+      role !== "docente" &&
+      role !== "admin"
+    ) {
+      // Nota: Admin también puede entrar a docente
+      url.pathname = "/dashboard/estudiante";
+      const redirectResponse = NextResponse.redirect(url);
+      if (needsCookieUpdate) {
+        redirectResponse.cookies.set("marti-user-role", role, {
+          path: "/",
+          maxAge: 60 * 60 * 24,
+          sameSite: "lax",
+        });
+      }
+      return redirectResponse;
     }
-    // Nota: dashboard/estudiante es accesible por todos por ahora o podemos ser estrictos
+
+    // Si pasó las validaciones y necesitamos actualizar la cookie
+    if (needsCookieUpdate) {
+      // Clonamos la respuesta original para inyectarle la cookie
+      // Nota: supabase.auth.getUser() ya pudo haber modificado 'response'
+      // pero necesitamos asegurar que la cookie viaje.
+
+      // En Next.js middleware, para setear cookies en la respuesta final 'response',
+      // debemos hacerlo antes de devolverla.
+      response.cookies.set("marti-user-role", role, {
+        path: "/",
+        maxAge: 60 * 60 * 24, // 24 horas
+        sameSite: "lax",
+      });
+    }
   }
 
   // 2. Redirigir si ya está logueado y trata de entrar al login

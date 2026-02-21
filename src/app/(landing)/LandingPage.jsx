@@ -9,19 +9,21 @@ export default function LandingPage() {
     <div className="relative w-full">
       {/* --- HERO SECTION --- (Height: Screen, Flex: Center) */}
       <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden py-20 md:py-28">
-        {/* Background Video */}
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover z-0 grayscale-[0.2] fixed"
-        >
-          <source src="/videos/Estudiantes.mp4" type="video/mp4" />
-        </video>
+        {/* Background Image */}
+        <div className="absolute inset-0 select-none">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover z-0 grayscale-[0.2]"
+          >
+            <source src="/videos/Estudiantes.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/80 via-zinc-950/40 to-zinc-950" />
+        </div>
 
         {/* Overlay Gradients */}
-        <div className="absolute inset-0 z-10 bg-gradient-to-b from-zinc-950/80 via-zinc-950/40 to-zinc-950" />
         <div className="absolute inset-0 z-10 bg-gradient-to-r from-zinc-950/60 via-transparent to-zinc-950/60" />
 
         {/* Content */}

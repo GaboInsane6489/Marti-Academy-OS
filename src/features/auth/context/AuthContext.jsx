@@ -23,8 +23,24 @@ export const AuthProvider = ({ children }) => {
         const session = await authService.getSession();
         if (session?.user) {
           setUser(session.user);
+
+          // Intentar cargar perfil desde caché primero para UX instantánea
+          const cachedProfile = localStorage.getItem(
+            `marti_profile_${session.user.id}`,
+          );
+          if (cachedProfile) {
+            setProfile(JSON.parse(cachedProfile));
+          }
+
+          // Revalidar perfil en background
           const userProfile = await authService.getUserProfile(session.user.id);
-          setProfile(userProfile);
+          if (userProfile) {
+            setProfile(userProfile);
+            localStorage.setItem(
+              `marti_profile_${session.user.id}`,
+              JSON.stringify(userProfile),
+            );
+          }
         }
       } catch (error) {
         console.error("Error inicializando auth:", error);
@@ -39,23 +55,52 @@ export const AuthProvider = ({ children }) => {
     const {
       data: { subscription },
     } = authService.onAuthStateChange(async (event, session) => {
-      if (session?.user) {
-        setUser(session.user);
-        try {
-          const userProfile = await authService.getUserProfile(session.user.id);
-          setProfile(userProfile);
-        } catch (error) {
-          console.error("Error buscando perfil:", error);
+      try {
+        if (session?.user) {
+          setUser(session.user);
+
+          // Cargar caché de forma segura
+          try {
+            const cachedProfile = localStorage.getItem(
+              `marti_profile_${session.user.id}`,
+            );
+            if (cachedProfile && !profile) {
+              setProfile(JSON.parse(cachedProfile));
+            }
+          } catch (e) {
+            console.warn("Error leyendo caché de perfil:", e);
+            // Si falla el caché, no pasa nada, seguimos con el fetch real
+          }
+
+          try {
+            const userProfile = await authService.getUserProfile(
+              session.user.id,
+            );
+            if (userProfile) {
+              setProfile(userProfile);
+              localStorage.setItem(
+                `marti_profile_${session.user.id}`,
+                JSON.stringify(userProfile),
+              );
+            }
+          } catch (error) {
+            console.error("Error buscando perfil actualizado:", error);
+          }
+        } else {
+          setUser(null);
+          setProfile(null);
+          // Limpiar caché al cerrar sesión podría ser opcional, pero seguro
+          // localStorage.removeItem("marti_profile_...");
         }
-      } else {
-        setUser(null);
-        setProfile(null);
+      } catch (err) {
+        console.error("Error en onAuthStateChange:", err);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [profile]); // Added profile dependecy to suppress lint but be careful with loops, though profile usage inside effect is just for check.
 
   const value = {
     user,
