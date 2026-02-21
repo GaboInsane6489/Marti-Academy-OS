@@ -73,6 +73,7 @@ export default function LandingNavbar() {
                   alt="Avatar"
                   fill
                   className="object-cover"
+                  sizes="32px"
                 />
               </div>
             </Link>
@@ -125,14 +126,15 @@ export default function LandingNavbar() {
                     alt="Avatar"
                     fill
                     className="object-cover"
+                    sizes="40px"
                   />
                 </div>
                 <div className="flex flex-col">
                   <span className="text-sm font-bold text-white">
-                    Mi Dashboard
+                    {profile?.full_name || "Mi Dashboard"}
                   </span>
                   <span className="text-[10px] uppercase tracking-widest text-blue-400 font-bold">
-                    Ver Portal
+                    {profile?.role ? `Portal de ${profile.role}` : "Ver Portal"}
                   </span>
                 </div>
               </div>

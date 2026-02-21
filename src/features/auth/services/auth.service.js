@@ -39,27 +39,35 @@ export const authService = {
    * Obtiene el perfil del usuario actual incluyendo datos de gamificación
    */
   async getUserProfile(userId) {
-    const { data, error } = await supabase
-      .from("profiles")
-      .select(
-        `
-        *,
-        gamification_profiles(xp_total, current_level, merits_balance)
-      `,
-      )
-      .eq("id", userId)
-      .single();
+    try {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select(
+          `
+          *,
+          gamification_profiles(xp_total, current_level, merits_balance)
+        `,
+        )
+        .eq("id", userId)
+        .single();
 
-    if (error) throw error;
+      if (error) {
+        console.warn("⚠️ No se encontró perfil para este ID:", userId);
+        return null;
+      }
 
-    // Aplanar objeto para facilidad de uso
-    if (data.gamification_profiles) {
-      data.xp_total = data.gamification_profiles.xp_total;
-      data.current_level = data.gamification_profiles.current_level;
-      data.merits_balance = data.gamification_profiles.merits_balance;
+      // Tu lógica de aplanado está perfecta
+      if (data?.gamification_profiles) {
+        data.xp_total = data.gamification_profiles.xp_total;
+        data.current_level = data.gamification_profiles.current_level;
+        data.merits_balance = data.gamification_profiles.merits_balance;
+      }
+
+      return data;
+    } catch (e) {
+      console.error("❌ Error crítico en getUserProfile:", e.message);
+      return null;
     }
-
-    return data;
   },
 
   /**

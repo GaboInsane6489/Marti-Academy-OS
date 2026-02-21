@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 
 export default function DashboardLayout({ children }) {
-  const { profile, loading, isAuthenticated, signOut } = useSession();
+  const { user, profile, loading, isAuthenticated, signOut } = useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -158,6 +158,7 @@ export default function DashboardLayout({ children }) {
                 alt="Profile"
                 fill
                 className="object-cover"
+                sizes="40px"
               />
             </div>
             <div className="min-w-0">
@@ -234,6 +235,7 @@ export default function DashboardLayout({ children }) {
                   alt="Profile"
                   fill
                   className="object-cover"
+                  sizes="40px"
                 />
               </div>
             </div>
