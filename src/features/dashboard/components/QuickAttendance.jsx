@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { Check, X, Clock as ClockIcon, Users, User } from "lucide-react";
 import { attendanceService } from "../services/attendance.service";
 
@@ -99,12 +100,13 @@ export default function QuickAttendance({ classroomId, teacherId, subjectId }) {
               }`}
             >
               <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center overflow-hidden">
+                <div className="h-8 w-8 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center overflow-hidden relative">
                   {student.avatar_url ? (
-                    <img
+                    <Image
                       src={student.avatar_url}
-                      alt=""
-                      className="h-full w-full object-cover"
+                      alt={student.full_name || "Avatar"}
+                      fill
+                      className="object-cover"
                     />
                   ) : (
                     <User className="h-4 w-4 text-zinc-600" />
