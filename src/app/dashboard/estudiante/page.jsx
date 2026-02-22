@@ -11,10 +11,12 @@ import {
 } from "lucide-react";
 import LevelProgressBar from "@/features/dashboard/components/LevelProgressBar";
 import SubjectCard from "@/features/dashboard/components/SubjectCard";
+import UpcomingActivity from "@/features/dashboard/components/UpcomingActivity";
 import Image from "next/image";
 
 export default function StudentDashboardPage() {
-  const { stats, badges, loading, error, subjects, profile } = useStudentData();
+  const { stats, badges, loading, error, subjects, profile, activities } =
+    useStudentData();
 
   if (error) {
     return (
@@ -151,22 +153,31 @@ export default function StudentDashboardPage() {
           )}
         </div>
 
-        {/* Courses & System Area */}
+        {/* Agenda & System Area */}
         <div className="space-y-6">
+          <header className="flex justify-between items-center">
+            <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.3em] flex items-center gap-2">
+              <Calendar className="h-3 w-3" />
+              Agenda Inminente
+            </h3>
+            <span className="text-[10px] font-mono text-blue-400/50">
+              Next Events
+            </span>
+          </header>
+
+          <UpcomingActivity activities={activities} loading={loading} />
+
           <div className="bg-gradient-to-br from-blue-600 to-indigo-900 p-8 rounded-[2.5rem] shadow-xl shadow-blue-500/10 flex flex-col justify-between text-white relative overflow-hidden group">
-            <Calendar className="absolute -top-6 -right-6 h-32 w-32 opacity-10 group-hover:rotate-12 transition-transform duration-700" />
+            <Sparkles className="absolute -top-6 -right-6 h-32 w-32 opacity-10 group-hover:rotate-12 transition-transform duration-700" />
             <div className="relative z-10">
               <p className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-1">
-                Courses Activos
+                Mapa Curricular
               </p>
-              <h4 className="text-4xl font-serif">{stats.coursesCount}</h4>
+              <h4 className="text-3xl font-serif italic">ADN Académico</h4>
               <p className="text-xs opacity-80 mt-2 font-light">
-                Materias vinculadas a tu sección actual.
+                {stats.coursesCount} materias vinculadas a tu sección.
               </p>
             </div>
-            <button className="relative z-10 w-full mt-6 py-3 rounded-2xl bg-white text-blue-900 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-zinc-100 transition-colors">
-              Explorar Materias
-            </button>
           </div>
         </div>
       </div>
