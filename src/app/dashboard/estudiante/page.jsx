@@ -10,18 +10,11 @@ import {
   ChevronRight,
 } from "lucide-react";
 import LevelProgressBar from "@/features/dashboard/components/LevelProgressBar";
+import SubjectCard from "@/features/dashboard/components/SubjectCard";
 import Image from "next/image";
 
 export default function StudentDashboardPage() {
-  const { stats, badges, loading, error, profile } = useStudentData();
-
-  if (loading) {
-    return (
-      <div className="flex h-[60vh] w-full items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-500 border-t-transparent" />
-      </div>
-    );
-  }
+  const { stats, badges, loading, error, subjects, profile } = useStudentData();
 
   if (error) {
     return (
@@ -177,6 +170,40 @@ export default function StudentDashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* Mis Asignaturas Grid */}
+      <section className="space-y-6">
+        <h2 className="text-2xl md:text-3xl font-serif">
+          Mis{" "}
+          <span className="text-blue-400 italic font-light">Asignaturas.</span>
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {loading ? (
+            // Skeleton State
+            [1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="h-44 w-full bg-white/[0.02] border border-white/5 rounded-[2.5rem] animate-pulse"
+              />
+            ))
+          ) : subjects && subjects.length > 0 ? (
+            subjects.map((subject) => (
+              <SubjectCard key={subject.id} subject={subject} />
+            ))
+          ) : (
+            <div className="col-span-full h-32 flex flex-col items-center justify-center border border-dashed border-white/5 rounded-[2.5rem] bg-white/[0.02] text-center p-6">
+              <p className="text-sm text-zinc-500 font-bold uppercase tracking-widest">
+                No se encontraron materias asignadas
+              </p>
+              <p className="text-[10px] text-zinc-600 uppercase tracking-widest mt-2">
+                Por favor, contacta con administración para verificar tu
+                matrícula.
+              </p>
+            </div>
+          )}
+        </div>
+      </section>
     </div>
   );
 }

@@ -16,6 +16,7 @@ import { supabase } from "@/config/supabase";
  * @typedef {Object} UseStudentDataReturn
  * @property {StudentStats} stats - Aggregated student statistics
  * @property {Array} badges - List of earned badges
+ * @property {Array} subjects - List of enrolled subjects with teacher info
  * @property {boolean} loading - Loading state for gamification and courses data
  * @property {string|null} error - Error message if sync fails
  * @property {Object|null} profile - The raw auth profile object
@@ -39,6 +40,7 @@ export const useStudentData = () => {
       coursesCount: 0,
     },
     badges: [],
+    subjects: [],
     loading: true,
     error: null,
   });
@@ -54,14 +56,19 @@ export const useStudentData = () => {
       const allBadges = await gamificationService.getStoreBadges(profileId);
       const earnedBadges = allBadges.filter((b) => b.isEarned);
 
-      // 2. Fetch de Conteo de Cursos (Subjects)
-      const { count, error: subjectsError } = await supabase
+      // 2. Fetch de Materias (Subjects) con información del docente
+      const { data: subjectsData, error: subjectsError } = await supabase
         .from("subjects")
-        .select("*", { count: "exact", head: true })
+        .select(
+          `
+          *,
+          teacher:profiles(full_name, first_name)
+        `,
+        )
         .eq("classroom_id", classroomId);
 
       if (subjectsError) {
-        console.error("⚠️ Error fetching subjects count:", subjectsError);
+        console.error("⚠️ Error fetching subjects:", subjectsError);
       }
 
       setData((prev) => ({
@@ -71,9 +78,10 @@ export const useStudentData = () => {
           current_level: profile.current_level || 1,
           streak_days: profile.streak_days || 0,
           merits_balance: profile.merits_balance || 0,
-          coursesCount: count || 0,
+          coursesCount: subjectsData?.length || 0,
         },
         badges: earnedBadges,
+        subjects: subjectsData || [],
         loading: false,
         error: null,
       }));
