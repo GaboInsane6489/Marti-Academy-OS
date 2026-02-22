@@ -24,6 +24,21 @@ export default function LoginPage() {
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-zinc-950 flex flex-col items-center justify-center p-4 sm:p-6 text-zinc-100 selection:bg-blue-500/30">
+      {/* Global Background Elements (OS Consistency) */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-600/5 rounded-full blur-[150px] -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-cyan-600/5 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2" />
+      </div>
+
+      {/* Grid Pattern Overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none z-0 opacity-[0.03]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 2px 2px, white 1px, transparent 0)",
+          backgroundSize: "40px 40px",
+        }}
+      />
       {/* Back to Home Button */}
       <Link
         href="/"
@@ -94,7 +109,7 @@ export default function LoginPage() {
         </div>
 
         {/* Formulario de Acceso */}
-        <div className="bg-zinc-900/40 border border-white/5 backdrop-blur-xl rounded-[1.5rem] lg:rounded-[1.8rem] p-5 lg:p-8 shadow-2xl relative overflow-hidden group w-full max-w-[320px] lg:max-w-[360px] mx-auto">
+        <div className="bg-zinc-900/40 border border-white/10 backdrop-blur-2xl rounded-[1.5rem] lg:rounded-[1.8rem] p-5 lg:p-8 shadow-2xl relative overflow-hidden group w-full max-w-[320px] lg:max-w-[360px] mx-auto">
           <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
           <div className="relative z-10 space-y-5 lg:space-y-6">
