@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 
 export default function LoginForm({ signInWithGoogle, loading }) {
   return (
@@ -23,14 +23,23 @@ export default function LoginForm({ signInWithGoogle, loading }) {
           disabled={loading}
           className="w-full h-10 lg:h-12 bg-white text-black rounded-xl font-bold text-[10px] lg:text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-zinc-200 transition-all active:scale-95 shadow-lg shadow-white/5 disabled:opacity-50 cursor-pointer"
         >
-          <Image
-            src="https://www.google.com/favicon.ico"
-            width={16}
-            height={16}
-            className="grayscale"
-            alt="Google"
-          />
-          Acceder con Google
+          {loading ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin shrink-0" />
+              Accediendo...
+            </>
+          ) : (
+            <>
+              <Image
+                src="https://www.google.com/favicon.ico"
+                width={16}
+                height={16}
+                className="grayscale"
+                alt="Google"
+              />
+              Acceder con Google
+            </>
+          )}
         </button>
 
         <div className="relative py-1 lg:py-2">
