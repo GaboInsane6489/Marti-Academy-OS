@@ -65,4 +65,56 @@ export const attendanceService = {
 
     return session;
   },
+
+  /**
+   * Actualiza un registro individual de asistencia (Gestión por excepción)
+   */
+  async updateAttendanceRecord(attendanceId, studentId, status) {
+    const { data, error } = await supabase
+      .from("attendance_records")
+      .upsert(
+        {
+          attendance_id: attendanceId,
+          student_id: studentId,
+          status: status,
+        },
+        { onConflict: "attendance_id, student_id" },
+      )
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  /**
+   * Crea o recupera la sesión de asistencia del día para una materia
+   */
+  async getOrCreateTodaySession(subjectId, teacherId) {
+    const today = new Date().toISOString().split("T")[0];
+
+    // Buscar si ya existe
+    const { data: existing, error: findError } = await supabase
+      .from("attendance")
+      .select("id")
+      .eq("subject_id", subjectId)
+      .eq("date", today)
+      .single();
+
+    if (!findError && existing) return existing.id;
+
+    // Si no existe, crearla
+    const { data: session, error: createError } = await supabase
+      .from("attendance")
+      .insert({
+        subject_id: subjectId,
+        teacher_id: teacherId,
+        date: today,
+      })
+      .select("id")
+      .single();
+
+    if (createError) throw createError;
+    return session.id;
+  },
 };

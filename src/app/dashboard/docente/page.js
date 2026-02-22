@@ -13,10 +13,13 @@ import {
   ChevronRight,
 } from "lucide-react";
 import Link from "next/link";
+import QuickAttendance from "@/features/dashboard/components/QuickAttendance";
 
 export default function DocenteDashboard() {
   const { profile } = useSession();
   const [loading, setLoading] = useState(true);
+  const [selectedClass, setSelectedClass] = useState(null);
+  const [classrooms, setClassrooms] = useState([]);
   const [stats, setStats] = useState({
     activeSubjects: 0,
     pendingGrades: 0,
@@ -27,8 +30,13 @@ export default function DocenteDashboard() {
     async function loadDashboardData() {
       if (!profile?.id) return;
       try {
-        const data = await teacherService.getTeacherStats(profile.id);
-        setStats(data);
+        setLoading(true);
+        const [statsData, classroomsData] = await Promise.all([
+          teacherService.getTeacherStats(profile.id, selectedClass),
+          teacherService.getTeacherClassrooms(profile.id),
+        ]);
+        setStats(statsData);
+        setClassrooms(classroomsData);
       } catch (error) {
         console.error("Error loading teacher dashboard:", error);
       } finally {
@@ -36,9 +44,9 @@ export default function DocenteDashboard() {
       }
     }
     loadDashboardData();
-  }, [profile?.id]);
+  }, [profile?.id, selectedClass]);
 
-  if (loading) {
+  if (loading && !selectedClass) {
     return (
       <div className="flex h-[400px] w-full items-center justify-center">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-500 border-t-transparent" />
@@ -49,14 +57,27 @@ export default function DocenteDashboard() {
   return (
     <div className="space-y-8 animate-in fade-in duration-1000">
       {/* Welcome Header */}
-      <section className="space-y-2">
-        <h1 className="text-4xl md:text-5xl font-serif">
-          Panel de <span className="text-blue-400 italic">Control</span>
-        </h1>
-        <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest flex items-center gap-2">
-          <GraduationCap className="h-3 w-3" />
-          Gestión Académica • Prof. {profile?.full_name}
-        </p>
+      <section className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div className="space-y-2">
+          <h1 className="text-4xl md:text-5xl font-serif">
+            Panel de <span className="text-blue-400 italic">Control</span>
+          </h1>
+          <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest flex items-center gap-2">
+            <GraduationCap className="h-3 w-3" />
+            {selectedClass ? "Modo Aula Activo" : "Gestión Académica"} • Prof.{" "}
+            {profile?.full_name}
+          </p>
+        </div>
+
+        {selectedClass && (
+          <button
+            onClick={() => setSelectedClass(null)}
+            className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-zinc-400 text-[10px] font-bold uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all flex items-center gap-2 animate-in slide-in-from-right-4"
+          >
+            <AlertCircle className="h-3 w-3 rotate-45" />
+            Limpiar Filtro
+          </button>
+        )}
       </section>
 
       {/* Bento Grid Architecture */}
@@ -101,38 +122,50 @@ export default function DocenteDashboard() {
           </div>
         </div>
 
-        {/* SLOT 2: Métricas de Control (1/3) */}
+        {/* SLOT 2: Métricas o QuickAttendance (1/3) */}
         <div className="space-y-6">
-          <div className="bg-white/5 border border-white/10 p-6 rounded-[2rem] backdrop-blur-2xl group hover:bg-white/10 transition-all">
-            <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-4">
-              Materias Activas
-            </h3>
-            <div className="flex items-end gap-3">
-              <span className="text-4xl font-serif text-white">
-                {stats.activeSubjects}
-              </span>
-              <BookOpen className="h-5 w-5 text-blue-400 mb-2 opacity-50" />
+          {selectedClass ? (
+            <div className="h-full bg-white/5 border border-white/10 p-6 rounded-[2rem] backdrop-blur-2xl animate-in fade-in zoom-in-95 duration-500">
+              <QuickAttendance
+                classroomId={selectedClass}
+                teacherId={profile?.id}
+                subjectId={stats.nextClass?.subject_id}
+              />
             </div>
-          </div>
+          ) : (
+            <>
+              <div className="bg-white/5 border border-white/10 p-6 rounded-[2rem] backdrop-blur-2xl group hover:bg-white/10 transition-all">
+                <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-4">
+                  Materias Activas
+                </h3>
+                <div className="flex items-end gap-3">
+                  <span className="text-4xl font-serif text-white">
+                    {stats.activeSubjects}
+                  </span>
+                  <BookOpen className="h-5 w-5 text-blue-400 mb-2 opacity-50" />
+                </div>
+              </div>
 
-          <div
-            className={`bg-white/5 border border-white/10 p-6 rounded-[2rem] backdrop-blur-2xl group hover:bg-white/10 transition-all ${stats.pendingGrades > 0 ? "border-orange-500/30" : ""}`}
-          >
-            <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-4 flex items-center gap-2">
-              Tareas Pendientes
-              {stats.pendingGrades > 0 && (
-                <AlertCircle className="h-3 w-3 text-orange-400 animate-pulse" />
-              )}
-            </h3>
-            <div className="flex items-end gap-3">
-              <span
-                className={`text-4xl font-serif ${stats.pendingGrades > 0 ? "text-orange-400 drop-shadow-[0_0_10px_rgba(251,146,60,0.3)]" : "text-white"}`}
+              <div
+                className={`bg-white/5 border border-white/10 p-6 rounded-[2rem] backdrop-blur-2xl group hover:bg-white/10 transition-all ${stats.pendingGrades > 0 ? "border-orange-500/30" : ""}`}
               >
-                {stats.pendingGrades}
-              </span>
-              <ChevronRight className="h-5 w-5 text-zinc-600 mb-2 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </div>
+                <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-4 flex items-center gap-2">
+                  Tareas Pendientes
+                  {stats.pendingGrades > 0 && (
+                    <AlertCircle className="h-3 w-3 text-orange-400 animate-pulse" />
+                  )}
+                </h3>
+                <div className="flex items-end gap-3">
+                  <span
+                    className={`text-4xl font-serif ${stats.pendingGrades > 0 ? "text-orange-400 drop-shadow-[0_0_10px_rgba(251,146,60,0.3)]" : "text-white"}`}
+                  >
+                    {stats.pendingGrades}
+                  </span>
+                  <ChevronRight className="h-5 w-5 text-zinc-600 mb-2 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </>
+          )}
         </div>
 
         {/* SLOT 3: Acceso Rápido a Grupos (Full Width) */}
@@ -144,15 +177,24 @@ export default function DocenteDashboard() {
             </h3>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Iterar sobre aulas del docente en el siguiente paso */}
-            <div className="bg-white/5 border border-white/10 p-4 rounded-2xl backdrop-blur-md flex items-center justify-between hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer group">
-              <span className="text-xs font-bold uppercase tracking-widest text-zinc-300">
-                Aula 402 - A
-              </span>
-              <div className="h-8 w-8 rounded-full bg-white/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
-                <ChevronRight className="h-4 w-4 text-white" />
+            {classrooms.map((cls) => (
+              <div
+                key={cls.id}
+                onClick={() => setSelectedClass(cls.id)}
+                className={`bg-white/5 border ${selectedClass === cls.id ? "border-blue-500 bg-blue-500/5" : "border-white/10"} p-4 rounded-2xl backdrop-blur-md flex items-center justify-between hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer group`}
+              >
+                <span
+                  className={`text-xs font-bold uppercase tracking-widest ${selectedClass === cls.id ? "text-blue-400" : "text-zinc-300"}`}
+                >
+                  {cls.academic_year?.name} - {cls.section?.name}
+                </span>
+                <div className="h-8 w-8 rounded-full bg-white/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
+                  <ChevronRight
+                    className={`h-4 w-4 ${selectedClass === cls.id ? "text-blue-400" : "text-white"}`}
+                  />
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
