@@ -6,8 +6,26 @@ import { gamificationService } from "@/features/dashboard/services/gamification.
 import { supabase } from "@/config/supabase";
 
 /**
+ * @typedef {Object} StudentStats
+ * @property {number} xp_total - Total historical XP
+ * @property {number} current_level - Current academic level
+ * @property {number} streak_days - Current consecutive activity days
+ * @property {number} merits_balance - Current currency/merits balance
+ * @property {number} coursesCount - Count of subjects in student's classroom
+ *
+ * @typedef {Object} UseStudentDataReturn
+ * @property {StudentStats} stats - Aggregated student statistics
+ * @property {Array} badges - List of earned badges
+ * @property {boolean} loading - Loading state for gamification and courses data
+ * @property {string|null} error - Error message if sync fails
+ * @property {Object|null} profile - The raw auth profile object
+ */
+
+/**
  * Hook semántico para centralizar los datos del estudiante en el Dashboard.
  * Gestiona estadísticas de gamificación, medallas y conteo de cursos.
+ *
+ * @returns {UseStudentDataReturn}
  */
 export const useStudentData = () => {
   const { profile, loading: authLoading } = useSession();
@@ -25,24 +43,25 @@ export const useStudentData = () => {
     error: null,
   });
 
+  const profileId = profile?.id;
+  const classroomId = profile?.classroom_id;
+
   const loadStudentDashboardData = useCallback(async () => {
-    if (!profile?.id) return;
+    if (!profileId) return;
 
     try {
       // 1. Fetch de Medallas
-      const allBadges = await gamificationService.getStoreBadges(profile.id);
+      const allBadges = await gamificationService.getStoreBadges(profileId);
       const earnedBadges = allBadges.filter((b) => b.isEarned);
 
       // 2. Fetch de Conteo de Cursos (Subjects)
-      // Se basa en el classroom_id del perfil del estudiante
       const { count, error: subjectsError } = await supabase
         .from("subjects")
         .select("*", { count: "exact", head: true })
-        .eq("classroom_id", profile.classroom_id);
+        .eq("classroom_id", classroomId);
 
       if (subjectsError) {
         console.error("⚠️ Error fetching subjects count:", subjectsError);
-        // No bloqueamos todo el dashboard si fallan solo los cursos
       }
 
       setData((prev) => ({
@@ -66,15 +85,27 @@ export const useStudentData = () => {
         error: "No se pudo sincronizar el ADN del estudiante",
       }));
     }
-  }, [profile]);
+  }, [profileId, classroomId, profile]);
 
   useEffect(() => {
-    if (!authLoading && profile) {
-      loadStudentDashboardData();
-    } else if (!authLoading && !profile) {
-      setData((prev) => ({ ...prev, loading: false }));
-    }
-  }, [authLoading, profile, loadStudentDashboardData]);
+    let isMounted = true;
+
+    const fetchData = async () => {
+      if (!authLoading && profileId) {
+        await loadStudentDashboardData();
+      } else if (!authLoading && !profileId) {
+        if (isMounted) {
+          setData((prev) => ({ ...prev, loading: false }));
+        }
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [authLoading, profileId, loadStudentDashboardData]);
 
   return { ...data, profile };
 };
