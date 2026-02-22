@@ -45,7 +45,7 @@ export const authService = {
         .select(
           `
           *,
-          gamification_profiles(xp_total, current_level, merits_balance)
+          gamification_profiles(xp_total, current_level, merits_balance, streak_days)
         `,
         )
         .eq("id", userId)
@@ -61,6 +61,7 @@ export const authService = {
         data.xp_total = data.gamification_profiles.xp_total;
         data.current_level = data.gamification_profiles.current_level;
         data.merits_balance = data.gamification_profiles.merits_balance;
+        data.streak_days = data.gamification_profiles.streak_days;
       }
 
       return data;
