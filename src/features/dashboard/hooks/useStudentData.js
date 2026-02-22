@@ -157,5 +157,39 @@ export const useStudentData = () => {
     };
   }, [authLoading, profileId, loadStudentDashboardData]);
 
+  // Delta 1.2: Sincronización Realtime para Gamificación
+  useEffect(() => {
+    if (!profileId) return;
+
+    const channel = supabase
+      .channel(`gamification_sync_${profileId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "gamification_profiles",
+          filter: `student_id=eq.${profileId}`,
+        },
+        (payload) => {
+          setData((prev) => ({
+            ...prev,
+            stats: {
+              ...prev.stats,
+              xp_total: payload.new.xp_total,
+              current_level: payload.new.current_level,
+              merits_balance: payload.new.merits_balance,
+              streak_days: payload.new.streak_days,
+            },
+          }));
+        },
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [profileId]);
+
   return { ...data, profile };
 };
