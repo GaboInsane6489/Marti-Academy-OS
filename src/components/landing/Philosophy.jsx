@@ -2,7 +2,7 @@
 
 import { Shield, Award, Users } from "lucide-react";
 
-export default function Features({ scrollRef, isVisible }) {
+export default function Philosophy({ scrollRef, isVisible }) {
   const features = [
     {
       icon: Shield,

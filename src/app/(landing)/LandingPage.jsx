@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Hero from "@/components/landing/Hero";
-import Features from "@/components/landing/Features";
+import Philosophy from "@/components/landing/Philosophy";
 import Ecosystem from "@/components/landing/Ecosystem";
 import CTA from "@/components/landing/CTA";
 
@@ -31,7 +31,7 @@ function useScrollReveal() {
 
 export default function LandingPage() {
   const [heroRef, heroVisible] = useScrollReveal();
-  const [featuresRef, featuresVisible] = useScrollReveal();
+  const [philosophyRef, philosophyVisible] = useScrollReveal();
   const [inmersivaRef, inmersivaVisible] = useScrollReveal();
   const [ctaRef, ctaVisible] = useScrollReveal();
 
@@ -39,7 +39,7 @@ export default function LandingPage() {
     <div className="relative w-full bg-zinc-950 text-zinc-100 selection:bg-blue-500/30 overflow-x-hidden">
       <Hero scrollRef={heroRef} isVisible={heroVisible} />
 
-      <Features scrollRef={featuresRef} isVisible={featuresVisible} />
+      <Philosophy scrollRef={philosophyRef} isVisible={philosophyVisible} />
 
       <Ecosystem scrollRef={inmersivaRef} isVisible={inmersivaVisible} />
 
