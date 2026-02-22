@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSession } from "@/features/auth/hooks/useSession";
+import { useStudentData } from "@/features/dashboard/hooks/useStudentData";
 import {
   Flame,
   Trophy,
@@ -11,31 +10,28 @@ import {
   ChevronRight,
 } from "lucide-react";
 import LevelProgressBar from "@/features/dashboard/components/LevelProgressBar";
-import { gamificationService } from "@/features/dashboard/services/gamification.service";
 import Image from "next/image";
 
 export default function StudentDashboardPage() {
-  const { profile, user } = useSession();
-  const [badges, setBadges] = useState([]);
-  const [loadingBadges, setLoadingBadges] = useState(true);
+  const { stats, badges, loading, error, profile } = useStudentData();
 
-  useEffect(() => {
-    async function loadBadges() {
-      if (profile?.id) {
-        try {
-          const allBadges = await gamificationService.getStoreBadges(
-            profile.id,
-          );
-          setBadges(allBadges.filter((b) => b.isEarned).slice(0, 4));
-        } catch (error) {
-          console.error("Error loading badges:", error);
-        } finally {
-          setLoadingBadges(false);
-        }
-      }
-    }
-    loadBadges();
-  }, [profile?.id]);
+  if (loading) {
+    return (
+      <div className="flex h-[60vh] w-full items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-500 border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-8 bg-red-500/10 border border-red-500/20 rounded-3xl text-center">
+        <p className="text-red-400 font-bold uppercase tracking-widest text-xs">
+          {error}
+        </p>
+      </div>
+    );
+  }
 
   const firstName =
     profile?.first_name || profile?.full_name?.split(" ")[0] || "Guerrero";
@@ -64,8 +60,8 @@ export default function StudentDashboardPage() {
         {/* Level & Progress (Span 2) */}
         <div className="lg:col-span-2 bg-zinc-900/40 border border-white/10 p-8 rounded-[2.5rem] backdrop-blur-xl relative overflow-hidden group">
           <LevelProgressBar
-            xpTotal={profile?.xp_total || 0}
-            currentLevel={profile?.current_level || 1}
+            xpTotal={stats.xp_total}
+            currentLevel={stats.current_level}
           />
           <div className="absolute -bottom-12 -right-12 h-40 w-40 bg-blue-600/10 blur-3xl rounded-full pointer-events-none" />
         </div>
@@ -84,7 +80,7 @@ export default function StudentDashboardPage() {
             </div>
             <div className="mt-4">
               <h3 className="text-3xl font-serif leading-none">
-                {profile?.streak_days || 0}
+                {stats.streak_days}
               </h3>
               <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1">
                 Días de Racha
@@ -104,7 +100,7 @@ export default function StudentDashboardPage() {
             </div>
             <div className="mt-4">
               <h3 className="text-3xl font-serif leading-none">
-                {profile?.merits_balance || 0}
+                {stats.merits_balance}
               </h3>
               <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1">
                 Méritos Acumulados
@@ -114,31 +110,23 @@ export default function StudentDashboardPage() {
         </div>
       </div>
 
-      {/* Card C: Badges & Activites Area */}
+      {/* Card C: Badges & Activities Area */}
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 bg-zinc-900/40 border border-white/10 p-8 rounded-[2.5rem] backdrop-blur-xl">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-400 flex items-center gap-2">
               <Medal className="h-4 w-4 text-yellow-500" />
-              Tus Medallas Recientes
+              Tus Medallas Recientes (
+              <span className="text-blue-400">{badges.length}</span>)
             </h3>
             <button className="text-[10px] font-bold text-blue-400 uppercase tracking-widest flex items-center gap-1 hover:text-white transition-colors">
               Ver Todas <ChevronRight className="h-3 w-3" />
             </button>
           </div>
 
-          {loadingBadges ? (
-            <div className="flex gap-4">
-              {[1, 2, 3, 4].map((i) => (
-                <div
-                  key={i}
-                  className="h-20 w-20 rounded-2xl bg-white/5 animate-pulse"
-                />
-              ))}
-            </div>
-          ) : badges.length > 0 ? (
+          {badges.length > 0 ? (
             <div className="flex flex-wrap gap-6">
-              {badges.map((badge) => (
+              {badges.slice(0, 4).map((badge) => (
                 <div key={badge.id} className="group relative">
                   <div className="h-20 w-20 rounded-2xl bg-zinc-800/50 border border-white/5 flex items-center justify-center group-hover:border-yellow-500/30 transition-all p-4">
                     {badge.icon_url ? (
@@ -170,21 +158,23 @@ export default function StudentDashboardPage() {
           )}
         </div>
 
-        {/* Calendar/Next Event placeholder */}
-        <div className="bg-gradient-to-br from-blue-600 to-indigo-900 p-8 rounded-[2.5rem] shadow-xl shadow-blue-500/10 flex flex-col justify-between text-white relative overflow-hidden group">
-          <Calendar className="absolute -top-6 -right-6 h-32 w-32 opacity-10 group-hover:rotate-12 transition-transform duration-700" />
-          <div className="relative z-10">
-            <p className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-1">
-              Próximo Hito
-            </p>
-            <h4 className="text-2xl font-serif">Examen Bimestral</h4>
-            <p className="text-xs opacity-80 mt-2 font-light">
-              Faltan 4 días para evaluar tu dominio en Matemáticas.
-            </p>
+        {/* Courses & System Area */}
+        <div className="space-y-6">
+          <div className="bg-gradient-to-br from-blue-600 to-indigo-900 p-8 rounded-[2.5rem] shadow-xl shadow-blue-500/10 flex flex-col justify-between text-white relative overflow-hidden group">
+            <Calendar className="absolute -top-6 -right-6 h-32 w-32 opacity-10 group-hover:rotate-12 transition-transform duration-700" />
+            <div className="relative z-10">
+              <p className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-1">
+                Courses Activos
+              </p>
+              <h4 className="text-4xl font-serif">{stats.coursesCount}</h4>
+              <p className="text-xs opacity-80 mt-2 font-light">
+                Materias vinculadas a tu sección actual.
+              </p>
+            </div>
+            <button className="relative z-10 w-full mt-6 py-3 rounded-2xl bg-white text-blue-900 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-zinc-100 transition-colors">
+              Explorar Materias
+            </button>
           </div>
-          <button className="relative z-10 w-full mt-6 py-3 rounded-2xl bg-white text-blue-900 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-zinc-100 transition-colors">
-            Preparar Módulo
-          </button>
         </div>
       </div>
     </div>

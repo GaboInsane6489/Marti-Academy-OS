@@ -1,0 +1,38 @@
+# SURGERY LOG: Martí Academy OS - Fase 1 Prototipado
+
+## Componentes Modularizados (Feature-First)
+
+- **Authentication**: `src/features/auth/components/LoginForm.jsx`
+- **Dashboard UI**:
+  - `src/features/dashboard/components/DashboardSidebar.jsx`
+  - `src/features/dashboard/components/DashboardHeader.jsx`
+  - `src/features/dashboard/components/LevelProgressBar.jsx`
+- **Landing Components**:
+  - `src/components/landing/Hero.jsx`
+  - `src/components/landing/Philosophy.jsx`
+  - `src/components/landing/Ecosystem.jsx`
+  - `src/components/landing/CTA.jsx`
+
+## Hooks de Datos Activos
+
+- `useSession`: Centraliza acceso al usuario, perfil y datos de gamificación aplanados.
+- `useAuth`: Contexto raíz para la sesión con Supabase.
+
+## Estándares de Estilo Confirmados
+
+- **Arquitectura**: Next.js 15 (App Router) + Feature-First (JS/JSX).
+- **Diseño**: "Martí OS" Deep Dark Aesthetic.
+  - **Paneles**: `bg-zinc-900/40` + `backdrop-blur-2xl` + `border-white/10`.
+  - **Tipografía**: Serif/Italic para saludos y acentos, Mono para estados técnicos.
+  - **Glows**: `blue-600/5` y `cyan-600/5` para profundidad.
+- **Feedback**: Estados de carga animados con `Lucide-React` (Loader2/Flame).
+
+## Limpieza Realizada
+
+- Eliminación de archivos "fantasma" (`RootLayout`, `RootLoading`, `RootError`).
+- Consolidación de `layout.js`, `loading.js` y `error.js` en `.jsx`.
+- Sincronización de `streak_days` y `xp_total` en tiempo real.
+
+---
+
+_Log generado por Antigravity - Fase de Auditoría Completada._
