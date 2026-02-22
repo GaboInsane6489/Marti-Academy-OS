@@ -1,7 +1,7 @@
 # Martí Academy OS
 
 | Stage: Omega | Environment: Development | Status: Active |
-| :----------- | :----------------------- | :------------- |
+| :----------: | :----------------------: | :------------: |
 
 [![Next.js 15](https://img.shields.io/badge/Next.js-15-000000?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![React 19](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
@@ -28,10 +28,10 @@ The core objective of Martí Academy OS is to provide a seamless digital environ
 
 The platform is built on modern industry standards to ensure scalability and performance:
 
-- **Frontend**: Next.js 15+ (App Router) using React 19 features.
-- **Styling**: Tailwind CSS 4.0 with custom glassmorphism utilities.
-- **Backend-as-a-Service**: Supabase (PostgreSQL, Auth, Storage, and Realtime).
-- **Communication**: Lucide React and shadcn/ui primitives.
+- ![Next.js](https://img.shields.io/badge/-Next.js_15-000000?style=flat&logo=nextdotjs&logoColor=white) **Frontend**: Next.js 15+ (App Router) using React 19 features.
+- ![Tailwind CSS](https://img.shields.io/badge/-Tailwind_CSS_4.0-38B2AC?style=flat&logo=tailwindcss&logoColor=white) **Styling**: Tailwind CSS 4.0 with custom glassmorphism utilities.
+- ![Supabase](https://img.shields.io/badge/-Supabase-3ECF8E?style=flat&logo=supabase&logoColor=white) **Backend-as-a-Service**: Supabase (PostgreSQL, Auth, Storage, and Realtime).
+- ![Lucide](https://img.shields.io/badge/-Lucide_React-black?style=flat&logo=react&logoColor=61DAFB) **Communication**: Lucide React and shadcn/ui primitives.
 
 ---
 
@@ -67,10 +67,10 @@ The system utilizes **Centralized Hooks** (e.g., `src/features/dashboard/hooks/u
 
 The system is currently in the **Omega Cycle**, focusing on Data Flow Excellence and Immersive UI.
 
-- **Student Dashboard**: Refactored for high-fidelity performance using React 19 optimizations.
-- **Subject Grid**: Implemented dynamic course mapping with **SubjectCard** and **SubjectDrawer**.
-- **Gamification Engine**: Active synchronization of **XP**, **Daily Streaks**, and **Merit Wallet**.
-- **Navigation**: Immersive side-panel infrastructure for subject details.
+- [x] **Student Dashboard**: Refactored for high-fidelity performance using React 19 optimizations.
+- [x] **Subject Grid**: Implemented dynamic course mapping with `SubjectCard` and `SubjectDrawer`.
+- [x] **Gamification Engine**: Active synchronization of **XP**, **Daily Streaks**, and **Merit Wallet**.
+- [x] **Navigation**: Immersive side-panel infrastructure for subject details.
 
 ---
 
@@ -102,7 +102,7 @@ The system is currently in the **Omega Cycle**, focusing on Data Flow Excellence
 
 ## 7. Project Metadata
 
-- **Lead Developer**: Gabriel Alexander González
+- **Lead Developer**: [![Gabriel Alexander Gonzalez](https://img.shields.io/badge/Gabriel_Alexander_González-Professional_Profile-blue?style=flat-square&logo=github)](https://github.com/GaboInsane6489)
 - **Institution**: Colegio José Martí
 - **Year**: 2026
 - **License**: MIT
