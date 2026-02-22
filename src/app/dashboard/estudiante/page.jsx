@@ -34,13 +34,18 @@ export default function StudentDashboardPage() {
   return (
     <div className="space-y-10 animate-in fade-in duration-1000">
       {/* Header de Identidad */}
-      <section className="space-y-2 pb-2 border-b border-white/5">
+      <section
+        className="space-y-2 pb-2 border-b border-white/5 animate-fade-up"
+        style={{ animationDelay: "100ms" }}
+      >
         <h1 className="text-4xl md:text-6xl font-serif">
           Hágase la luz,{" "}
-          <span className="text-blue-400 italic font-light">{firstName}.</span>
+          <span className="text-blue-400 italic font-light drop-shadow-[0_0_15px_rgba(96,165,250,0.3)]">
+            {firstName}.
+          </span>
         </h1>
         <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-[0.3em] flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
+          <span className="h-2 w-2 rounded-full bg-blue-500 animate-pulse shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
           Terminal Académica Activa •{" "}
           {new Date().toLocaleDateString("es-ES", {
             weekday: "long",
@@ -53,18 +58,24 @@ export default function StudentDashboardPage() {
       {/* Main Stats Area */}
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Level & Progress (Span 2) */}
-        <div className="lg:col-span-2 bg-zinc-900/40 border border-white/10 p-8 rounded-[2.5rem] backdrop-blur-xl relative overflow-hidden group">
+        <div
+          className="lg:col-span-2 bg-white/5 border border-white/10 p-8 rounded-[2.5rem] backdrop-blur-2xl relative overflow-hidden group hover:bg-white/10 transition-all duration-500 shadow-[0_0_20px_rgba(255,255,255,0.02)] animate-fade-up"
+          style={{ animationDelay: "200ms" }}
+        >
           <LevelProgressBar
             xpTotal={stats.xp_total}
             currentLevel={stats.current_level}
           />
-          <div className="absolute -bottom-12 -right-12 h-40 w-40 bg-blue-600/10 blur-3xl rounded-full pointer-events-none" />
+          <div className="absolute -bottom-12 -right-12 h-40 w-40 bg-blue-600/10 blur-3xl rounded-full pointer-events-none group-hover:bg-blue-600/20 transition-colors" />
         </div>
 
         {/* Bento Grid Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-1 gap-6">
           {/* Card A: Streak */}
-          <div className="bg-zinc-900/40 border border-white/10 p-6 rounded-[2.5rem] backdrop-blur-xl flex flex-col justify-between group hover:border-orange-500/30 transition-colors">
+          <div
+            className="bg-white/5 border border-white/10 p-6 rounded-[2.5rem] backdrop-blur-2xl flex flex-col justify-between group hover:bg-white/10 hover:border-orange-500/40 hover:scale-[1.02] transition-all duration-500 animate-fade-up"
+            style={{ animationDelay: "300ms" }}
+          >
             <div className="flex justify-between items-start">
               <div className="h-10 w-10 rounded-2xl bg-orange-500/10 flex items-center justify-center border border-orange-500/20 group-hover:scale-110 transition-transform">
                 <Flame className="h-5 w-5 text-orange-500 animate-pulse" />
@@ -74,7 +85,7 @@ export default function StudentDashboardPage() {
               </span>
             </div>
             <div className="mt-4">
-              <h3 className="text-3xl font-serif leading-none">
+              <h3 className="text-3xl font-serif leading-none text-orange-400 drop-shadow-[0_0_15px_rgba(251,146,60,0.4)] animate-pulse [animation-duration:3s]">
                 {stats.streak_days}
               </h3>
               <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1">
@@ -84,7 +95,10 @@ export default function StudentDashboardPage() {
           </div>
 
           {/* Card B: Wallet */}
-          <div className="bg-zinc-900/40 border border-white/10 p-6 rounded-[2.5rem] backdrop-blur-xl flex flex-col justify-between group hover:border-blue-500/30 transition-colors">
+          <div
+            className="bg-white/5 border border-white/10 p-6 rounded-[2.5rem] backdrop-blur-2xl flex flex-col justify-between group hover:bg-white/10 hover:border-blue-500/40 hover:scale-[1.02] transition-all duration-500 animate-fade-up"
+            style={{ animationDelay: "400ms" }}
+          >
             <div className="flex justify-between items-start">
               <div className="h-10 w-10 rounded-2xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20 group-hover:scale-110 transition-transform">
                 <Trophy className="h-5 w-5 text-blue-400" />
@@ -94,7 +108,7 @@ export default function StudentDashboardPage() {
               </span>
             </div>
             <div className="mt-4">
-              <h3 className="text-3xl font-serif leading-none">
+              <h3 className="text-3xl font-serif leading-none text-blue-300 drop-shadow-[0_0_15px_rgba(147,197,253,0.4)]">
                 {stats.merits_balance}
               </h3>
               <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1">
@@ -107,10 +121,13 @@ export default function StudentDashboardPage() {
 
       {/* Card C: Badges & Activities Area */}
       <div className="grid lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-zinc-900/40 border border-white/10 p-8 rounded-[2.5rem] backdrop-blur-xl">
+        <div
+          className="lg:col-span-2 bg-white/5 border border-white/10 p-8 rounded-[2.5rem] backdrop-blur-2xl animate-fade-up"
+          style={{ animationDelay: "500ms" }}
+        >
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-400 flex items-center gap-2">
-              <Medal className="h-4 w-4 text-yellow-500" />
+              <Medal className="h-4 w-4 text-yellow-500 drop-shadow-[0_0_8px_rgba(234,179,8,0.5)]" />
               Tus Medallas Recientes (
               <span className="text-blue-400">{badges.length}</span>)
             </h3>
@@ -154,7 +171,10 @@ export default function StudentDashboardPage() {
         </div>
 
         {/* Agenda & System Area */}
-        <div className="space-y-6">
+        <div
+          className="space-y-6 animate-fade-up"
+          style={{ animationDelay: "600ms" }}
+        >
           <header className="flex justify-between items-center">
             <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.3em] flex items-center gap-2">
               <Calendar className="h-3 w-3" />
@@ -167,13 +187,15 @@ export default function StudentDashboardPage() {
 
           <UpcomingActivity activities={activities} loading={loading} />
 
-          <div className="bg-gradient-to-br from-blue-600 to-indigo-900 p-8 rounded-[2.5rem] shadow-xl shadow-blue-500/10 flex flex-col justify-between text-white relative overflow-hidden group">
-            <Sparkles className="absolute -top-6 -right-6 h-32 w-32 opacity-10 group-hover:rotate-12 transition-transform duration-700" />
+          <div className="bg-gradient-to-br from-blue-600/20 to-indigo-900/40 border border-white/10 p-8 rounded-[2.5rem] shadow-xl shadow-blue-500/5 flex flex-col justify-between text-white relative overflow-hidden group backdrop-blur-2xl hover:bg-white/5 transition-all duration-700">
+            <Sparkles className="absolute -top-6 -right-6 h-32 w-32 opacity-10 group-hover:rotate-12 group-hover:scale-110 transition-all duration-700" />
             <div className="relative z-10">
               <p className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-1">
                 Mapa Curricular
               </p>
-              <h4 className="text-3xl font-serif italic">ADN Académico</h4>
+              <h4 className="text-3xl font-serif italic drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
+                ADN Académico
+              </h4>
               <p className="text-xs opacity-80 mt-2 font-light">
                 {stats.coursesCount} materias vinculadas a tu sección.
               </p>

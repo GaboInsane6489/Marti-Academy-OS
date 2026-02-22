@@ -29,30 +29,42 @@ export default function LevelProgressBar({ xpTotal = 0, currentLevel = 1 }) {
         </div>
       </div>
 
-      <div className="relative h-4 w-full bg-zinc-900/60 border border-white/5 rounded-full overflow-hidden backdrop-blur-md">
+      <div className="relative h-4 w-full bg-white/5 border border-white/10 rounded-full overflow-hidden backdrop-blur-2xl shadow-inner">
         {/* Fill Background Glow */}
         <div
-          className="absolute inset-y-0 left-0 bg-blue-600 transition-all duration-1000 ease-out shadow-[0_0_20px_rgba(37,99,235,0.4)]"
+          className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-600 to-blue-400 transition-all duration-1000 ease-out shadow-[0_0_20px_rgba(59,130,246,0.5)]"
           style={{ width: `${percentage}%` }}
-        />
+        >
+          {/* Animated Shine Sweep */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-[shimmer_3s_infinite]" />
+        </div>
 
-        {/* Animated Stripes */}
+        {/* Animated Stripes (Subtle) */}
         <div
-          className="absolute inset-0 opacity-20 bg-[linear-gradient(45deg,rgba(255,255,255,0.2)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0.2)_75%,transparent_75%,transparent)] bg-[length:20px_20px] animate-[progress-stripe_2s_linear_infinite]"
+          className="absolute inset-0 opacity-10 bg-[linear-gradient(45deg,rgba(255,255,255,0.2)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0.2)_75%,transparent_75%,transparent)] bg-[length:20px_20px] animate-[progress-stripe_4s_linear_infinite]"
           style={{ width: `${percentage}%` }}
         />
-
-        {/* Shine Effect */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
       </div>
 
-      <div className="flex items-center gap-2 text-[9px] text-zinc-500 font-bold uppercase tracking-widest bg-blue-500/5 py-2 px-4 rounded-xl border border-blue-500/10 w-fit">
-        <Sparkles className="h-3 w-3 text-yellow-500" />
-        Faltan {requiredXP - currentXP} XP para alcanzar el Nivel{" "}
-        {currentLevel + 1}
+      <div className="flex items-center gap-2 text-[9px] text-zinc-400 font-bold uppercase tracking-widest bg-white/5 py-2 px-4 rounded-xl border border-white/5 w-fit backdrop-blur-md">
+        <Sparkles className="h-3 w-3 text-yellow-500 animate-pulse" />
+        Faltan{" "}
+        <span className="text-white mx-1">
+          {requiredXP - currentXP} XP
+        </span>{" "}
+        para alcanzar el Nivel{" "}
+        <span className="text-blue-400 ml-1">{currentLevel + 1}</span>
       </div>
 
       <style jsx>{`
+        @keyframes shimmer {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(200%);
+          }
+        }
         @keyframes progress-stripe {
           from {
             background-position: 0 0;

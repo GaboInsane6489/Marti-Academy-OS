@@ -53,7 +53,7 @@ export const useStudentData = () => {
   const classroomId = profile?.classroom_id;
 
   const loadStudentDashboardData = useCallback(async () => {
-    if (!profileId) return;
+    if (!profileId || !classroomId) return;
 
     try {
       // 1. Fetch de Medallas

@@ -63,29 +63,35 @@ export default function UpcomingActivity({ activities = [], loading = false }) {
         return (
           <div
             key={activity.id}
-            className={`group relative flex items-center gap-4 p-4 rounded-2xl bg-zinc-900/40 border ${borderColor} backdrop-blur-xl hover:bg-white/[0.05] transition-all cursor-pointer`}
+            className={`group relative flex items-center gap-4 p-4 rounded-2xl bg-white/5 border ${borderColor} backdrop-blur-2xl hover:bg-white/10 hover:border-white/20 hover:scale-[1.02] transition-all duration-500 cursor-pointer shadow-[0_0_15px_rgba(0,0,0,0.1)]`}
           >
             {/* Indicador Lateral */}
             <div
-              className={`absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 rounded-r-full ${accentColor} opacity-50 group-hover:opacity-100 transition-opacity`}
+              className={`absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 rounded-r-full ${accentColor} opacity-50 group-hover:opacity-100 transition-opacity shadow-[0_0_10px_rgba(255,255,255,0.2)]`}
             />
 
             {/* Icono de Tipo */}
             <div
-              className={`h-10 w-10 rounded-xl bg-white/[0.02] flex items-center justify-center border border-white/5`}
+              className={`h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-white/10 transition-colors`}
             >
               {isClass ? (
-                <LinkIcon className={`h-5 w-5 ${iconColor}`} />
+                <LinkIcon
+                  className={`h-5 w-5 ${iconColor} drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]`}
+                />
               ) : isCritical ? (
-                <AlertCircle className={`h-5 w-5 ${iconColor}`} />
+                <AlertCircle
+                  className={`h-5 w-5 ${iconColor} drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]`}
+                />
               ) : (
-                <Book className={`h-5 w-5 ${iconColor}`} />
+                <Book
+                  className={`h-5 w-5 ${iconColor} drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]`}
+                />
               )}
             </div>
 
             {/* Detalles */}
             <div className="flex-1 min-w-0">
-              <h4 className="text-[11px] font-serif text-white truncate group-hover:text-blue-400 transition-colors">
+              <h4 className="text-[11px] font-serif italic text-white truncate group-hover:text-blue-400 transition-colors">
                 {activity.title}
               </h4>
               <p className="text-[9px] text-zinc-500 font-mono uppercase tracking-widest mt-0.5">
@@ -94,7 +100,7 @@ export default function UpcomingActivity({ activities = [], loading = false }) {
             </div>
 
             {/* Accionador */}
-            <ChevronRight className="h-4 w-4 text-zinc-600 group-hover:text-white transition-colors" />
+            <ChevronRight className="h-4 w-4 text-zinc-600 group-hover:text-white group-hover:translate-x-1 transition-all" />
           </div>
         );
       })}

@@ -5,7 +5,7 @@ import { Menu, Bell } from "lucide-react";
 
 export default function DashboardHeader({ profile, user }) {
   return (
-    <header className="relative z-10 flex h-20 items-center justify-between px-8 border-b border-white/5 bg-zinc-950/80 backdrop-blur-xl shrink-0">
+    <header className="relative z-50 flex h-20 items-center justify-between px-8 border-b border-white/5 bg-black/40 backdrop-blur-md shrink-0">
       <div className="flex items-center gap-4">
         <button className="lg:hidden p-2 hover:bg-white/5 rounded-xl border border-white/5">
           <Menu className="h-6 w-6 text-zinc-400" />
