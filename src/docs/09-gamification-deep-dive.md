@@ -50,10 +50,19 @@ El ranking global se reinicia cada trimestre escolar para dar oportunidad a todo
 - Los **Top 10** reciben un "Trofeo de Temporada" permanente en su perfil.
 - El **Top 3** recibe un bono de XP para su nivel global.
 
+## 7. Estado de Implementación (Ciclo Omega)
+
+El sistema de gamificación se encuentra plenamente operativo e integrado en el **Dashboard del Estudiante** mediante el hook centralizado `useStudentData.js`:
+
+- **Sincronización de Perfiles**: Los datos de `xp_total`, `current_level`, `streak_days` y `merits_balance` se recuperan y actualizan en tiempo real.
+- **Visualización Inmersiva**: Barra de progreso de nivel con retroalimentación visual de XP necesaria para el próximo ascenso.
+- **Rachas Activas**: Contador de días de constancia integrado en la interfaz principal.
+- **Billetera de Méritos**: Visualización del balance actual para su uso futuro en el Salón de Méritos.
+
 ---
 
 ## Lógica Técnica (Supabase)
 
-- **Tabla `gamification_logs`**: Registra cada punto ganado para auditoría.
-- **Tabla `achievements`**: Catálogo de insignias disponibles.
+- **Tabla `profiles`**: Almacena el estado actual aplanado del estudiante para acceso rápido.
+- **Servicio `gamification.service.js`**: Orquestador de la comunicación entre el frontend y las funciones SQL de Supabase.
 - **Trigger `level_up_check`**: Automatiza el incremento de nivel cuando el XP alcanza umbrales predefinidos.

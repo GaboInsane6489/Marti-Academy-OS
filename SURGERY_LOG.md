@@ -33,6 +33,16 @@
 - Consolidación de `layout.js`, `loading.js` y `error.js` en `.jsx`.
 - Sincronización de `streak_days` y `xp_total` en tiempo real.
 
+## Ciclo Omega: Data Flow & Immersive UI
+
+- **Dashboard Estudiante**: Refactorización completa orientada a rendimiento y fidelidad visual.
+- **Data Orchestration**: Implementación del hook centralizado `useStudentData.js` para la gestión unificada de XP, Rachas, Méritos y Cursos.
+- **Subject Intelligence**:
+  - `SubjectDrawer.jsx`: Panel lateral inmersivo con detalles dinámicos, categorización automática y acciones rápidas (`ExternalLink`, `FolderOpen`).
+  - `SubjectCard.jsx`: Tarjetas adaptativas con integración de Glassmorphism.
+- **React Compiler Sync**: Alineación de arrays de dependencias y patrones de memoización para compatibilidad con Next.js 15 y React 19.
+- **Higiene Documental**: Manual de ingeniería (README) y actualización de blueprint de arquitectura.
+
 ---
 
-_Log generado por Antigravity - Fase de Auditoría Completada._
+_Log generado por Antigravity - Ciclo Omega Fase 2.1 & 4.2 Completado._

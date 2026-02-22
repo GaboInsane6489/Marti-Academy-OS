@@ -31,20 +31,18 @@ Interacciones del usuario
 
 Layouts por rol
 
-2. Application Layer
+#### 2. Application Layer
 
 Ubicada en:
 
-src/features/_/services
-src/features/_/hooks
+- `src/features/*/services`
+- `src/features/*/hooks`
 
 Responsabilidades:
 
-Orquestación de lógica
-
-Comunicación con Supabase
-
-Validaciones
+- **Centralized Hooks**: Orquestación de lógica compleja (ej. `useStudentData.js`) para simplificar el consumo de datos en la capa de presentación.
+- Comunicación con Supabase y servicios externos.
+- Gestión de estado local y validaciones de aplicación.
 
 3. Domain Layer
 
