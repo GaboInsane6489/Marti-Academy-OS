@@ -2,8 +2,22 @@
 
 import Image from "next/image";
 import { Menu, Bell, LogOut } from "lucide-react";
+import { useSession } from "@/features/auth/hooks/useSession";
+import { useRouter } from "next/navigation";
 
-export default function DashboardHeader({ profile, user, signOut }) {
+export default function DashboardHeader({ profile, user }) {
+  const { signOut } = useSession();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error("Logout failed:", error);
+    } finally {
+      router.push("/login");
+    }
+  };
   return (
     <header className="relative z-50 flex h-20 items-center justify-between px-8 border-b border-white/5 bg-black/40 backdrop-blur-md shrink-0">
       <div className="flex items-center gap-4">
@@ -26,9 +40,13 @@ export default function DashboardHeader({ profile, user, signOut }) {
 
       <div className="flex items-center gap-6">
         <button
-          onClick={signOut}
+          onClick={(e) => {
+            e.preventDefault();
+            console.log("Logout Triggered Manual");
+            handleLogout();
+          }}
           title="Cerrar Sesión"
-          className="relative p-2 hover:bg-red-500/10 rounded-xl transition-colors group"
+          className="z-50 cursor-pointer relative p-2 hover:bg-red-500/10 rounded-xl transition-colors group"
         >
           <LogOut className="h-5 w-5 text-zinc-400 group-hover:text-red-400 transition-colors" />
         </button>
