@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { Menu, Bell } from "lucide-react";
+import { Menu, Bell, LogOut } from "lucide-react";
 
-export default function DashboardHeader({ profile, user }) {
+export default function DashboardHeader({ profile, user, signOut }) {
   return (
     <header className="relative z-50 flex h-20 items-center justify-between px-8 border-b border-white/5 bg-black/40 backdrop-blur-md shrink-0">
       <div className="flex items-center gap-4">
@@ -25,6 +25,14 @@ export default function DashboardHeader({ profile, user }) {
       </div>
 
       <div className="flex items-center gap-6">
+        <button
+          onClick={signOut}
+          title="Cerrar Sesión"
+          className="relative p-2 hover:bg-red-500/10 rounded-xl transition-colors group"
+        >
+          <LogOut className="h-5 w-5 text-zinc-400 group-hover:text-red-400 transition-colors" />
+        </button>
+
         <button className="relative p-2 hover:bg-white/5 rounded-xl transition-colors">
           <Bell className="h-5 w-5 text-zinc-400" />
           <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-blue-500 ring-4 ring-zinc-950" />
