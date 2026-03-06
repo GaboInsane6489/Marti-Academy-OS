@@ -6,7 +6,7 @@ export default function LandingLayout({ children }) {
     /* Cambiamos el bg-[#050505] por black puro para mejor contraste de profundidad */
     <div className="relative min-h-screen bg-black selection:bg-white/20 overflow-x-hidden">
       {/* 1. EL VIDEO: Ahora con opacidad alta y sin filtros que lo opaquen */}
-      <div className="fixed inset-0 w-full h-full z-0 pointer-events-none">
+      <div className="fixed inset-0 w-full h-full z-0 pointer-events-none opacity-70">
         <video
           autoPlay
           muted

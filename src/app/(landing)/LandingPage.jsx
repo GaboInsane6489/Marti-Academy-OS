@@ -5,6 +5,7 @@ import Hero from "@/components/landing/Hero";
 import Philosophy from "@/components/landing/Philosophy";
 import Ecosystem from "@/components/landing/Ecosystem";
 import CTA from "@/components/landing/CTA";
+import Features from "@/components/landing/Features";
 import Link from "next/link";
 
 /**
@@ -38,6 +39,7 @@ export default function LandingPage() {
   const [heroRef, heroVisible] = useScrollReveal();
   const [philosophyRef, philosophyVisible] = useScrollReveal();
   const [inmersivaRef, inmersivaVisible] = useScrollReveal();
+  const [featuresRef, featuresVisible] = useScrollReveal();
   const [ctaRef, ctaVisible] = useScrollReveal();
 
   return (
@@ -47,6 +49,7 @@ export default function LandingPage() {
       <Hero scrollRef={heroRef} isVisible={heroVisible} />
       <Philosophy scrollRef={philosophyRef} isVisible={philosophyVisible} />
       <Ecosystem scrollRef={inmersivaRef} isVisible={inmersivaVisible} />
+      <Features scrollRef={featuresRef} isVisible={featuresVisible} />
       <CTA scrollRef={ctaRef} isVisible={ctaVisible} />
 
       {/* FOOTER: Mantenemos bg-black/80 para dar peso al final, pero permitiendo ver el video sutilmente */}
