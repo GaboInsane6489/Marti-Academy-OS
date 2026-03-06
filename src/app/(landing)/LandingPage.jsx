@@ -5,11 +5,11 @@ import Hero from "@/components/landing/Hero";
 import Philosophy from "@/components/landing/Philosophy";
 import Ecosystem from "@/components/landing/Ecosystem";
 import CTA from "@/components/landing/CTA";
+import Link from "next/link";
 
 /**
- * PROTOCOLO NEXUS: LandingPage Entry Point
- * Theme: Monochrome High-Intensity HUD
- * Feature: Intersection Observer Sync
+ * PROTOCOLO NEXUS: LandingPage Entry Point (v5 - Zero-Opacity Architecture)
+ * Logic: Elimina bgs locales para permitir que el Layout Video sea el entorno único.
  */
 
 function useScrollReveal() {
@@ -21,8 +21,6 @@ function useScrollReveal() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          // Mantenemos la observación si queremos animaciones de salida,
-          // pero para HUD Performance, unobserve es mejor.
           observer.unobserve(entry.target);
         }
       },
@@ -43,52 +41,125 @@ export default function LandingPage() {
   const [ctaRef, ctaVisible] = useScrollReveal();
 
   return (
-    <div className="relative w-full bg-[#0A0908] text-slate-300 selection:bg-white/20 overflow-x-hidden">
-      {/* SECTION 01: EXTERNAL COMMAND CENTER */}
+    /* ELIMINADO: bg-[#030303] -> Ahora es bg-transparent */
+    <div className="relative w-full bg-transparent text-white selection:bg-white/30 overflow-x-hidden font-sans">
+      {/* SECCIONES: Deben ser bg-transparent en sus definiciones internas */}
       <Hero scrollRef={heroRef} isVisible={heroVisible} />
-
-      {/* SECTION 02: CORE PHILOSOPHY (BENTO READY) */}
       <Philosophy scrollRef={philosophyRef} isVisible={philosophyVisible} />
-
-      {/* SECTION 03: ECOSYSTEM VIEWER */}
       <Ecosystem scrollRef={inmersivaRef} isVisible={inmersivaVisible} />
-
-      {/* SECTION 04: TERMINAL ACTION (CTA) */}
       <CTA scrollRef={ctaRef} isVisible={ctaVisible} />
 
-      {/* INDUSTRIAL FOOTER (REGLA 2.3 & 3.1) */}
-      <footer className="relative py-16 border-t border-white/10 bg-[#0A0908] overflow-hidden">
-        {/* Decoración de fondo HUD */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1300px] h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+      {/* FOOTER: Mantenemos bg-black/80 para dar peso al final, pero permitiendo ver el video sutilmente */}
+      <footer className="relative pt-24 pb-12 border-t-2 border-white/20 bg-black/80 backdrop-blur-lg overflow-hidden">
+        {/* HUD Decoration Lines */}
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />
 
         <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-            {/* Lado A: Metadatos del Sistema */}
-            <div className="flex flex-col items-center md:items-start space-y-2">
-              <div className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-white/40" />
-                <span className="font-mono text-[10px] uppercase tracking-[0.3em] font-black text-white/80">
-                  Martí_Academy // Final_Node
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-20">
+            {/* COL 1: BRAND ID & STATUS */}
+            <div className="col-span-2 lg:col-span-2 space-y-6">
+              <div className="flex items-center gap-3">
+                <div className="h-6 w-6 border-2 border-white flex items-center justify-center rounded-sm">
+                  <div className="h-2.5 w-2.5 bg-white animate-pulse shadow-[0_0_8px_white]" />
+                </div>
+                <span className="font-mono text-base uppercase tracking-[0.4em] font-black text-white">
+                  Martí_Academy
                 </span>
               </div>
-              <p className="font-mono text-[9px] text-white/30 uppercase tracking-widest">
-                Deployment_Year: 2026 // Location: Caracas_VZLA
+              <p className="font-mono text-[11px] text-white/70 uppercase leading-relaxed tracking-widest max-w-[300px] font-black">
+                [ Terminal de acceso institucional para la gestión de alto
+                rendimiento académico y administrativo ]
               </p>
+
+              {/* SYSTEM STATUS */}
+              <div className="inline-flex items-center gap-3 px-4 py-2 border-2 border-emerald-500/40 bg-emerald-500/5 rounded-lg">
+                <div className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_10px_#34d399]" />
+                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-emerald-400 font-black">
+                  System_Status: Operational
+                </span>
+              </div>
             </div>
 
-            {/* Lado B: Copyright Label */}
-            <div className="relative group cursor-crosshair">
-              <div className="absolute -inset-4 bg-white/[0.02] rounded-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-              <p className="relative font-mono text-[10px] uppercase tracking-[0.4em] text-white/50 font-black">
-                © {new Date().getFullYear()} Colegio José Martí{" "}
-                <span className="text-white/20 px-2">•</span> Academy_OS
+            {/* NAVIGATION LINKS */}
+            <div className="space-y-6">
+              <h4 className="font-mono text-[10px] uppercase tracking-[0.5em] text-white/40 font-black italic">
+                Navegación
+              </h4>
+              <ul className="space-y-4">
+                {["Dashboard", "Ecosistema", "Filosofía", "Protocolos"].map(
+                  (link) => (
+                    <li key={link}>
+                      <Link
+                        href="#"
+                        className="font-mono text-[12px] uppercase tracking-widest text-white/60 hover:text-white transition-all flex items-center gap-2 group font-black"
+                      >
+                        <span className="h-[2px] w-0 bg-white group-hover:w-5 transition-all duration-300 shadow-[0_0_8px_white]" />
+                        {link}
+                      </Link>
+                    </li>
+                  ),
+                )}
+              </ul>
+            </div>
+
+            {/* SOPORTE */}
+            <div className="space-y-6">
+              <h4 className="font-mono text-[10px] uppercase tracking-[0.5em] text-white/40 font-black italic">
+                Soporte
+              </h4>
+              <ul className="space-y-4">
+                {["Manuales", "Seguridad", "Privacidad", "Contacto"].map(
+                  (link) => (
+                    <li key={link}>
+                      <Link
+                        href="#"
+                        className="font-mono text-[12px] uppercase tracking-widest text-white/60 hover:text-white transition-all flex items-center gap-2 group font-black"
+                      >
+                        <span className="h-[2px] w-0 bg-white group-hover:w-5 transition-all duration-300 shadow-[0_0_8px_white]" />
+                        {link}
+                      </Link>
+                    </li>
+                  ),
+                )}
+              </ul>
+            </div>
+
+            {/* EXTERNAL */}
+            <div className="space-y-6">
+              <h4 className="font-mono text-[10px] uppercase tracking-[0.5em] text-white/40 font-black italic">
+                External
+              </h4>
+              <div className="flex gap-4">
+                {[1, 2, 3].map((i) => (
+                  <div
+                    key={i}
+                    className="h-11 w-11 border-2 border-white/20 flex items-center justify-center rounded-xl hover:bg-white transition-all cursor-pointer group"
+                  >
+                    <div className="h-2.5 w-2.5 bg-white/40 group-hover:bg-black transition-colors" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* BOTTOM METADATA */}
+          <div className="pt-8 border-t-2 border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex flex-col md:flex-row items-center gap-8">
+              <p className="font-mono text-[11px] uppercase tracking-[0.4em] text-white/80 font-black">
+                © 2026 Martí_Academy
               </p>
+              <p className="font-mono text-[11px] text-white/40 uppercase tracking-widest font-black">
+                Lat_Long: 10.4806° N, 66.9036° W
+              </p>
+            </div>
+            <div className="flex items-center gap-4">
+              <span className="font-mono text-[11px] uppercase tracking-[0.5em] text-white font-black">
+                Build: 0.9.4-Stable
+              </span>
+              <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
             </div>
           </div>
         </div>
-
-        {/* Scanner line sutil en el footer */}
-        <div className="absolute bottom-0 left-0 w-full h-1 bg-white/5 opacity-20" />
       </footer>
     </div>
   );
