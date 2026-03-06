@@ -51,7 +51,7 @@ export default function LandingNavbar() {
       >
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:40px_40px] opacity-[0.05]" />
 
-        <div className="flex flex-col gap-8 relative z-10 w-full px-12">
+        <div className="flex flex-col gap-8 relative z-10 w-full px-6">
           {NAV_LINKS.map((link, index) => (
             <Link
               key={link.id}
@@ -78,7 +78,7 @@ export default function LandingNavbar() {
         className={`fixed top-0 left-0 right-0 z-[200] transition-all duration-500 ${
           isScrolled
             ? "bg-black/90 backdrop-blur-xl border-b border-white/10 py-4"
-            : "bg-transparent py-8"
+            : "bg-transparent py-5"
         }`}
       >
         <div className="container mx-auto px-6 flex items-center justify-between">
